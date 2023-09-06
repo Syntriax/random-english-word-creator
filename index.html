@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Random English-Like Word Creator</title>
+  </head>
+  <body
+    class="w-screen h-screen flex flex-col items-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#4d2c43] to-[#20142e] text-white"
+  >
+    <h1 class="font-bold text-4xl mt-24 absolute text-center">
+      Random English-Like Word Creator
+    </h1>
+    <div class="h-full w-full flex flex-col items-center justify-center">
+      <h2 id="output" class="text-6xl px-10 font-bold text-center break-all">
+        Output
+      </h2>
+      <button
+        id="generate-button"
+        class="mt-6 py-4 px-8 text-xl font-bold bg-[#00000000] hover:bg-[#00000020] ease-in duration-100"
+        onclick="GenerateName()"
+      >
+        Generate Name
+      </button>
+
+      <div class="mt-4">
+        <label for="letter-count">Letter Count: </label>
+        <input
+          class="bg-transparent font-bold w-12 p-1"
+          type="number"
+          name="letter-count"
+          id="letter-count"
+          value="8"
+        />
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var letters = "abcdefghijklmnopqrstuvwxyz";
+    var percentages = [
+      36.8, 6.5, 12.4, 17.1, 59.1, 13.2, 9.0, 23.7, 28.6, 0.6, 1.9, 15.3, 11.4,
+      32.0, 36.0, 8.9, 0.5, 30.8, 27.5, 47.3, 11.1, 4.1, 6.8, 0.7, 8.9, 0.3,
+    ];
+    var percentageSum = percentages.reduce(
+      (partialSum, a) => partialSum + a,
+      0
+    );
+
+    function GenerateName() {
+      var name = "";
+      var nameLength = document.getElementById("letter-count").value;
+
+      for (let index = 0; index < nameLength; index++) {
+        const random = Math.random() * percentageSum;
+
+        var letter = letters[0];
+
+        var accumulation = 0.0;
+        for (let letterIndex = 0; letterIndex < letters.length; letterIndex++) {
+          accumulation += percentages[letterIndex];
+
+          if (accumulation < random) continue;
+
+          letter = letters[letterIndex];
+          break;
+        }
+
+        name += letter;
+      }
+
+      document.getElementById("output").innerText = name;
+    }
+  </script>
+</html>
